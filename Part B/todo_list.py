@@ -67,9 +67,35 @@ def remove_task(tasks, string, path):
 
     write_to_file(tasks, path)
 
+def mark_complete(tasks, string, path):
+    description = string.removeprefix("done ").strip().split(" ", 1)
+    task_id = str(description[0])
 
-    
-    
+    if task_id not in tasks:
+            print(f"The task with id #{task_id} does not exist. Please add it before attempting to mark it as complete.")
+            return
+
+    tasks[str(task_id)].update(completed=True)
+    write_to_file(tasks, path)
+
+def list_all(tasks):
+
+    for outer_key, inner_dict in tasks.items():
+
+        for inner_key, value in inner_dict.items():
+            
+            print(f"{inner_key}: {value}")
+        print()
+
+def list_todo(tasks):
+     for outer_key, inner_dict in tasks.items():
+             if inner_dict["completed"] == False:  
+                print(f"Task id: {inner_dict["task_id"]}")
+                print(f"Desc: {inner_dict["desc"]}")
+                print(f"Completed: {inner_dict["completed"]}")
+                print(f"Project: {inner_dict["project"]}")
+      
+        
 def main():
    path = "tasks.txt"
    tasks = read_from_file(path) or {}
@@ -85,6 +111,14 @@ def main():
             case "rem":
                 remove_task(tasks, command, path)
                 print(f"Updated list: {tasks}")
+            case "done":
+                  mark_complete(tasks, command, path)
+                  print(f"Updated list: {tasks}")
+            case "list":
+                  if command.split(" ", 1)[1].lower() == "all":   
+                        list_all(tasks)
+                  elif command.split(" ", 1)[1].lower() == "todo": 
+                       list_todo(tasks)
             case "exit":
                 break
 

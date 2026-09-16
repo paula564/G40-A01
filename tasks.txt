@@ -2,7 +2,13 @@
     "1": {
         "task_id": 1,
         "desc": "Buy ingredients",
-        "completed": false,
+        "completed": true,
         "project": null
+    },
+    "2": {
+        "task_id": 2,
+        "desc": "Study for Programming test",
+        "completed": false,
+        "project": "school"
     }
 }
