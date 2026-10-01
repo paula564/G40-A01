@@ -94,7 +94,14 @@ def list_todo(tasks):
                 print(f"Desc: {inner_dict["desc"]}")
                 print(f"Completed: {inner_dict["completed"]}")
                 print(f"Project: {inner_dict["project"]}")
-      
+
+
+def purge(tasks, path):
+    completed_keys = [key for key, task in tasks.items() if task["completed"]]
+    for key in completed_keys:
+        del tasks[key]
+    write_to_file(tasks, path)
+    
         
 def main():
    path = "tasks.txt"
@@ -119,6 +126,8 @@ def main():
                         list_all(tasks)
                   elif command.split(" ", 1)[1].lower() == "todo": 
                        list_todo(tasks)
+            case "purge":
+                  purge(tasks, path)
             case "exit":
                 break
 
