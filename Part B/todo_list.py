@@ -1,7 +1,5 @@
 from pathlib import Path
-
 import json
-
 
 class Task:
 
@@ -133,7 +131,8 @@ def mark_complete(tasks, string, path):
 
 
 def list_all(tasks):
-
+    if len(tasks) == 0:
+        print("There are no tasks in the list.")
     for outer_key, inner_dict in sorted(tasks.items(), key=lambda item: int(item[0])):
 
         print(f"Task id: {outer_key}")
@@ -144,7 +143,8 @@ def list_all(tasks):
 
 
 def list_todo(tasks):
-
+    if len(tasks) == 0:
+            print("There are no tasks in the list.")
     for outer_key, inner_dict in sorted(tasks.items(), key=lambda item: int(item[0])):
 
         if inner_dict["completed"] == False:
