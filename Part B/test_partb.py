@@ -96,7 +96,7 @@ data_update_task_response = (
     }
 )
 
-
+#These tests ensure that the correct task is removed 
 data_remove_task = (
     ("rem 1", {
         "1": {
@@ -141,6 +141,7 @@ data_remove_task_response = (
     }
 )
 
+#These tests ensure that the correct task is marked as done
 
 data_mark_complete = (
     ("done 1", {
@@ -186,7 +187,7 @@ data_mark_complete_response = (
     }
 )
 
-
+#These tests ensure that the correct tasks are removed because they have been completed
 data_purge = (
     {
         "1": {
@@ -239,6 +240,7 @@ data_purge_response = (
     }
 )
 
+#These tests will be used to ensure they are correctly written to a file
 
 data_file = (
     {
@@ -270,107 +272,85 @@ def print_pass(the_data, i):
 def print_fail(the_data, i):
     print(f'{Fore.RED}*** Test {i} with {the_data} failed.')
 
+#The following tests create a temporary file in the system's temporary directory, stores the tasks in it,
+#and completely deletes it once the test is over
 
 def run_add_task_test(test_data, expected):
     command, tasks = test_data
-
     with tempfile.NamedTemporaryFile(delete=False) as file:
         path = file.name
-
     try:
         tl.add_task(tasks, command, path)
         assert tasks == expected, tasks
-
     finally:
         os.remove(path)
 
 
 def run_update_task_test(test_data, expected):
     command, tasks = test_data
-
     with tempfile.NamedTemporaryFile(delete=False) as file:
         path = file.name
-
     try:
         tl.update_task(tasks, command, path)
         assert tasks == expected, tasks
-
     finally:
         os.remove(path)
 
 
 def run_remove_task_test(test_data, expected):
     command, tasks = test_data
-
     with tempfile.NamedTemporaryFile(delete=False) as file:
         path = file.name
-
     try:
         tl.remove_task(tasks, command, path)
         assert tasks == expected, tasks
-
     finally:
         os.remove(path)
 
 
 def run_mark_complete_test(test_data, expected):
     command, tasks = test_data
-
     with tempfile.NamedTemporaryFile(delete=False) as file:
         path = file.name
-
     try:
         tl.mark_complete(tasks, command, path)
         assert tasks == expected, tasks
-
     finally:
         os.remove(path)
 
 
 def run_purge_test(test_data, expected):
-
     with tempfile.NamedTemporaryFile(delete=False) as file:
         path = file.name
-
     try:
         tl.purge(test_data, path)
         assert test_data == expected, test_data
-
     finally:
         os.remove(path)
 
 
 def run_file_test(test_data):
-
     with tempfile.NamedTemporaryFile(delete=False) as file:
         path = file.name
-
     try:
         tl.write_to_file(test_data, path)
         actual = tl.read_from_file(path)
-
         assert actual == test_data, actual
-
     finally:
         os.remove(path)
 
 
 def run_task_magic_methods_test():
-
     task_1 = tl.Task(1, "Study", False, "school")
     task_2 = tl.Task(1, "Study", False, "school")
-
     assert str(task_1) == "Task id: 1\nDesc: Study\nCompleted: False\nProject: school"
     assert repr(task_1) == "Task(1, 'Study', False, 'school')"
     assert task_1 == task_2
 
 
 def test_add_task():
-
     print("Test add_task")
-
     for i, test_val in enumerate(data_add_task):
-
         try:
             run_add_task_test(test_val, data_add_task_response[i])
             print_pass(test_val, i + 1)
@@ -381,11 +361,8 @@ def test_add_task():
 
 
 def test_update_task():
-
     print("Test update_task")
-
     for i, test_val in enumerate(data_update_task):
-
         try:
             run_update_task_test(test_val, data_update_task_response[i])
             print_pass(test_val, i + 1)
@@ -396,11 +373,8 @@ def test_update_task():
 
 
 def test_remove_task():
-
     print("Test remove_task")
-
     for i, test_val in enumerate(data_remove_task):
-
         try:
             run_remove_task_test(test_val, data_remove_task_response[i])
             print_pass(test_val, i + 1)
@@ -411,11 +385,8 @@ def test_remove_task():
 
 
 def test_mark_complete():
-
     print("Test mark_complete")
-
     for i, test_val in enumerate(data_mark_complete):
-
         try:
             run_mark_complete_test(test_val, data_mark_complete_response[i])
             print_pass(test_val, i + 1)
@@ -426,28 +397,20 @@ def test_mark_complete():
 
 
 def test_purge():
-
     print("Test purge")
-
     for i, test_val in enumerate(data_purge):
-
         test_data = test_val.copy()
-
         try:
             run_purge_test(test_data, data_purge_response[i])
             print_pass(test_val, i + 1)
-
         except AssertionError as test_data:
             print_fail(test_data, i + 1)
             continue
 
 
 def test_file():
-
     print("Test file read/write")
-
     for i, test_val in enumerate(data_file):
-
         try:
             run_file_test(test_val)
             print_pass(test_val, i + 1)
@@ -458,9 +421,7 @@ def test_file():
 
 
 def test_task_magic_methods():
-
     print("Test Task magic methods")
-
     try:
         run_task_magic_methods_test()
         print_pass("Task magic methods", 1)

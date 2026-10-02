@@ -1,5 +1,3 @@
-#put everything under main 
-#need to do testing for this
 
 import sys
 
@@ -57,7 +55,7 @@ def is_valid_input(rows, number_of_rows):
     return True
 
 def get_columns(rows):
-    #passes three separate lists into zip instead of one big list. matches the items based on index (index 0s with index 0s, etc.)
+    #Passes three separate lists into zip instead of one big list. matches the items based on index (index 0s with index 0s, etc.)
     return [list(column) for column in zip(*rows)]
 
 def get_diagonals(rows, number_of_rows):
